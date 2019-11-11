@@ -16,7 +16,7 @@ def play(m, l=False):
     if not l:
         world.load_tiles(m)
     else:
-        world.load_tiles('map')
+        world.load_tiles('basic world')
     global player
     global clear
     player = make_player()
