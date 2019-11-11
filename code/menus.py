@@ -90,17 +90,19 @@ def getmap():
 
 class NewGame(Menu):
     def __init__(self):
-        super().__init__(name='Game', actions=[])
+        super().__init__(name='New Game', actions=[])
 
     def show(self):
         import game
         global getmap
+        print(f'Choose a map:\n ========== \n\n')
         game.play(getmap())
         Menu()
 
 class OldGame(Menu):
     def __init__(self):
-        super().__init__(name='Game', actions=save.list_saves())
+        import save
+        super().__init__(name='Load a Game', actions=save.list_saves())
 
     def show(self):
         print(f'Load a Game:\n ========= \n\n')
