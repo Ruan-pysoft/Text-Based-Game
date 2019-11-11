@@ -1,0 +1,18 @@
+IMPORTANT:
+I did this all with LibreOffice, and I don't know if this will work with Microsoft Office or Open Office!
+
+Step 1:
+    Make the file "MAPNAME.ods"
+Step 2:
+    Open it in LibreOffice calc
+Step 3:
+    Add tiles. A valid tile is a class name from "tiles.py". You should also add one starting tile (a tile with start = True)
+    and one victory tile (A tile with "player.victory = True" in the "modify_player" function).
+Step 4:
+    Select a square around all the cells that contains names in LibreOffice and copy them
+Step 5:
+    Make the file "MAPNAME.map"
+Step 6:
+    Open the .map file in any text editor
+Step 7:
+    Paste

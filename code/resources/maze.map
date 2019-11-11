@@ -1,0 +1,16 @@
+						CoinsRoom	
+						EmptyCavePath	LeaveCaveRoom
+					CoinsRoom	EmptyCavePath	
+		BruteRoom				ExplodingCowRoom	CoinsRoom
+BruteRoom	EmptyCavePath	EmptyCavePath	CoinsRoom			EmptyCavePath	
+	EmptyCavePath			StashRoom		BruteRoom	
+	EmptyCavePath		EmptyCavePath	EmptyCavePath	EmptyCavePath	EmptyCavePath	BruteRoom
+	EmptyCavePath	EmptyCavePath	EmptyCavePath				CoinsRoom
+			EmptyCavePath	EmptyCavePath			
+				EmptyCavePath			
+	EmptyCavePath	EmptyCavePath	EmptyCavePath	EmptyCavePath			
+EmptyCavePath	EmptyCavePath		EmptyCavePath	StartingRoom	StashRoom	CoinsRoom	
+BruteRoom		EmptyCavePath		EmptyCavePath			
+EmptyCavePath	StashRoom	EmptyCavePath		CoinsRoom			
+EmptyCavePath	EmptyCavePath	EmptyCavePath		EmptyCavePath			
+		CoinsRoom					

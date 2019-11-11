@@ -1,0 +1,8 @@
+			LeaveCaveRoom	
+	CoinsRoom	EmptyCavePath	BruteRoom	
+		EmptyCavePath		
+		EmptyCavePath		
+ExplodingCowRoom	EmptyCavePath	StartingRoom	EmptyCavePath	StashRoom
+		CoinsRoom		
+		EmptyCavePath		
+		BruteRoom		
