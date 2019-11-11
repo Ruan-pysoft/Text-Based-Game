@@ -1,1 +1,2 @@
-python3 code/main.py
+cd code
+python3 main.py
