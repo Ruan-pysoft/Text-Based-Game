@@ -85,7 +85,8 @@ def getmap():
                 get_map()
             else:
                 return m
-    return get_map()
+    m = get_map() # for some reason this is neaded because "return get_map()" either doesn't return or returns None
+    return m
 
 class NewGame(Menu):
     def __init__(self):
