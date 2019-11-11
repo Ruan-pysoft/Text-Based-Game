@@ -5,15 +5,15 @@ _world = {}
 starting_position = [0, 0]
 
 def save():
-    world = []
-    for k, v in _world:
+    world = {}
+    for k, v in _world.items():
         if v != None: world[k] = v.save()
         else: world[k] = None
     return world
 
 def load(data):
     #print(data)
-    for k, v in data:
+    for k, v in data.items():
         _world[k] = tiles.MapTile.load(v)
         if v != None:
             if _world[k].start:
