@@ -1,0 +1,3 @@
+This txt file does nothing.
+It's only here so that GitHub doesn't delete the "saves" folder.
+All saved games should be saved in the "saves" folder.
