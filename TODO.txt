@@ -1,0 +1,2 @@
+Let the player choose what weapon to attack with
+Let the player choose to not load a save if they coose "Load a save" from the title screen (you get stuck if there are no saves yet)
