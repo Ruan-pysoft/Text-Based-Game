@@ -7,7 +7,7 @@ class Item():
         self.name = name
         self.description = description
         self.value = value
- 
+
     def __str__(self):
         return "{}\n=====\n{}\nValue: {}\n".format(self.name, self.description, self.value)
 
@@ -19,7 +19,7 @@ class Item():
                 'description': self.description, 'value': self.value}
 
     @classmethod
-    def load(cls, data):
+    def load(cls, data): # load an item
         import items as it
         i = Item(data['name'], data['description'], data['value'])
         if data['type'] == 'Item':
@@ -134,7 +134,7 @@ class Enemy():
     def explode(self):
         if self.hp < self.ex_health and uniform(0.0000,1.0000) < self.ex_chance:
             self.ex = True
- 
+
     def is_alive(self):
         return self.hp > 0
 
@@ -145,7 +145,7 @@ class Enemy():
                 'explosion damage': self.ex_damage, 'explotion chance': self.ex_chance,
                 'max health needed to explode': self.ex_health,
                 'sharpness dmg. resistance': self.sharp_res,
-                'bluntness dmg. resistance': self.blunt_res,
+                'blunt dmg. resistance': self.blunt_res,
                 'explotion dmg. resistance': self.ex_res,
                 'inventory': [i.save() for i in self.inventory],
                 'has exploded?': self.ex}
@@ -157,7 +157,7 @@ class Enemy():
             e = cls(data['name'], data['hp'], data['damage'], data['sharpness dmg. ratio'],
                     data['blunt dmg. ratio'], data['explosion damage'],
                     data['explotion chance'], data['max health needed to explode'],
-                    data['sharpness dmg. resistance'], data['bluntness dmg. resistance'],
+                    data['sharpness dmg. resistance'], data['blunt dmg. resistance'],
                     data['explotion dmg. resistance'], [Item.load(i) for i in data['inventory']])
             i.ex = data['has exploded?']
             return i
@@ -165,4 +165,3 @@ class Enemy():
             return en.CreeperCow.load(data)
         elif data['type'] == 'Brute':
             return en.Brute.load(data)
-

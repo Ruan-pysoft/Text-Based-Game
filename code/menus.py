@@ -1,16 +1,16 @@
 import os
 
-if os.name == 'nt':
-    clear = lambda: os.system('cls') #on Windows System
-else:
-    clear = lambda: os.system('clear') #on Linux System
+if os.name == 'nt': #on Windows System
+    clear = lambda: os.system('cls') # command to clear the console
+else: #on Linux System
+    clear = lambda: os.system('clear') # command to clear the console
 
-class MenuAction:
+class MenuAction: # like a action, but for a menu, not the player
     def __init__(self, method, name, **kwargs):
-        self.method = method
-        self.name = name
-        self.kwargs = kwargs
- 
+        self.method = method # function/method to run
+        self.name = name # name to be printed to screen
+        self.kwargs = kwargs # other stuff
+
     def __str__(self):
         return "{}".format(self.name)
 
@@ -35,41 +35,41 @@ class LoadGame(MenuAction):
     def __init__(self):
         super().__init__(method=OldGame, name='Load a save')
 
-class Menu:
+class Menu: # Here we start using menus!
     def __init__(self, name, actions, **kwargs):
-        self.name = name
-        self.actions = actions
-        self.kwargs = kwargs
+        self.name = name # name to be printed to screen
+        self.actions = actions # available menu actions
+        self.kwargs = kwargs # other stuff
 
-        clear()
+        clear() # clear the console window
         import main
         main.menu = self
         main.update_screen()
- 
+
     def __str__(self):
         return "{}".format(self.name)
 
     def show(self):
-        print(f'{self.name}:\n =========== \n\n')
-        for i, a in enumerate(self.actions, 1):
+        print(f'{self.name}:\n =========== \n\n') # print the menu's name
+        for i, a in enumerate(self.actions, 1): # print every available menu action
             print(f'{i}: {a}')
         self.action = -1
-        def get_action():
+        def get_action(): # get user input
             try:
                 self.action = int(input('Choose an action: ')) - 1
             except:
                 print("That isn't a valid action!")
                 get_action()
         get_action()
-        self.actions[self.action].method()
+        self.actions[self.action].method() # do what the user says
 
-class TitleScreen(Menu):
+class TitleScreen(Menu): # title screen or main menu
     def __init__(self):
         super().__init__(name='Title Screen', actions=[OpenSettings(), PlayGame(), LoadGame(), QuitGame()])
 
-class Settings(Menu):
+class Settings(Menu): # settings screen
     def __init__(self):
-        super().__init__(name='Settings', actions=[MainMenu()])
+        super().__init__(name='Settings', actions=[MainMenu()]) # currently there's no settings
 
 def getmap():
     maps = []
@@ -88,7 +88,7 @@ def getmap():
     m = get_map() # for some reason this is neaded because "return get_map()" either doesn't return or returns None
     return m
 
-class NewGame(Menu):
+class NewGame(Menu): # start a new game
     def __init__(self):
         super().__init__(name='New Game', actions=[])
 
@@ -96,8 +96,8 @@ class NewGame(Menu):
         import game
         global getmap
         print(f'Choose a map:\n ========== \n\n')
-        game.play(getmap())
-        Menu()
+        game.play(getmap()) # make a game with a map of the player's choosing
+        TitleScreen()
 
 class OldGame(Menu):
     def __init__(self):
@@ -107,8 +107,8 @@ class OldGame(Menu):
     def show(self):
         print(f'Load a Game:\n ========= \n\n')
         for a in self.actions:
-            print(f'{a}')
-        
+            print(f'{a}') # list all the saves
+
         self.action = -1
         def get_action():
             self.action = input('Choose a save: ')
@@ -117,5 +117,5 @@ class OldGame(Menu):
                 get_action()
         get_action()
         import game
-        game.play(self.action, l=True)
-        Menu()
+        game.play(self.action, l=True) # continue playing on that save
+        TitleScreen()

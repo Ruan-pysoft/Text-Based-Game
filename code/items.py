@@ -1,25 +1,23 @@
 from mainclasses import Item
 import functions as f
-from functions import path, save, load, delete
-from functions import overWrite as ow
 
-class Gold(Item):
+class Gold(Item): # you can't have a game without gold!
     def __init__(self, weight):
         self.weight = weight #In KG
         super().__init__(name="Gold",
                          description="A gold nugget weighing {} grammes.".format(str(self.weight*1000)),
                          value=self.weight*500000)
+                         # the values of gold, silver and diamond are based on
+                         # the values when I origionally made this game. I can't
+                         # remember if it was in USD or ZAR
 
     def save(self):
         return {'type': 'Gold',
                 'name': self.name, 'description': self.description,
                 'value': self.value, 'weight': self.weight}
 
-    def __iter__(self):
-        return iter([self.name, self.description, self.weight])
-
-class GoldCoin(Item):
-    def __init__(self, amt):
+class GoldCoin(Item): # neither can you have a game without coins
+    def __init__(self, amt): # (except for Minecraft and Terasology and... actually a lot of games)
         self.amt = round(amt, 2)
         super().__init__(name="Golden Coin",
                          description="A round coin with {} stamped on the front.".format(str(self.amt)),
@@ -97,19 +95,19 @@ class Diamond(Item):
                 'value': self.value, 'weight': self.weight,
                 'cut': self.cut}
 
-class Weapon(Item):
+class Weapon(Item): # base for all (non-ranged non-magic) weapons
     def __init__(self, name, description, value, damage, sharp, blunt, explotion):
-        self.damage = damage
-        self.sharp_rat = sharp
-        self.blunt_rat = blunt
-        self.explotion_rat = explotion
+        self.damage = damage # damage the weapon does
+        self.sharp_rat = sharp # how much of that damage is sharpness damage
+        self.blunt_rat = blunt # how much of that damage is blunt damage
+        self.explotion_rat = explotion  # how much of that damage is explotion damage
 
         self.sharp_damage = self.damage*self.sharp_rat
         self.blunt_damage = self.damage*self.blunt_rat
         self.ex_damage = self.damage*self.explotion_rat
-        
+
         super().__init__(name, description, value)
- 
+
     def __str__(self):
         return "{}\n=====\n{}\nValue: {}\nDamage: {}".format(self.name, self.description, self.value, self.damage)
 
@@ -120,8 +118,8 @@ class Weapon(Item):
                 'sharp_rat': self.sharp_rat, 'blunt_rat': self.blunt_rat,
                 'explotion_rat': self.explotion_rat, 'sharp_damage': self.sharp_damage,
                 'blunt_damage': self.blunt_damage, 'ex_damage': self.ex_damage}
- 
- 
+
+
 class Rock(Weapon):
     def __init__(self):
         self.sharp = f.randomF(0.0,0.2,2)
@@ -141,7 +139,7 @@ class Rock(Weapon):
                 'explotion_rat': self.explotion_rat, 'sharp_damage': self.sharp_damage,
                 'blunt_damage': self.blunt_damage, 'ex_damage': self.ex_damage,
                 'sharp': self.sharp}
- 
+
 class Dagger(Weapon):
     def __init__(self):
         self.sharp = f.randomF(0.6,0.99,2)
@@ -166,7 +164,7 @@ class Sword(Weapon):
     def __init__(self):
         self.sharp = f.randomF(0.9,1.0,2)
         super().__init__(name="Sword",
-                         description="A good sword with no rust.",
+                         description="A good sword.",
                          value=5,
                          damage=f.random(19,22),
                          sharp=self.sharp,

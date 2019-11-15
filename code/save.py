@@ -1,10 +1,9 @@
-import game, player, world
 import functions as f
-import csv, pickle, json, os
+import json, os
 from inspect import currentframe, getframeinfo
 from pathlib import Path
 
-def save(data, save, file):
+def save(data, save, file): # save data to a save
     path = str(Path(getframeinfo(currentframe()).filename).resolve().parent) + str(Path(f'/saves/{save}/'))
     file = path + f'\\{file}.json'
     if not os.path.exists(path):
@@ -12,30 +11,30 @@ def save(data, save, file):
     with open(file, 'w') as f:
         json.dump(data, f, indent=2, separators=(',', ':'))
 
-def load(save, file):
+def load(save, file): # load data from a save
     file = str(Path(getframeinfo(currentframe()).filename).resolve().parent) + str(Path(f'/saves/{save}/{file}.json'))
     with open(file, 'r') as f:
         return json.load(f)
 
-def list_saves():
+def list_saves(): # list all folders in the './saves' directory
     path = str(Path(getframeinfo(currentframe()).filename).resolve().parent) + str(Path(f'/saves/'))
     #print(path)
     #print([di for di in os.listdir(path=path) if os.path.isdir(os.path.join(path,di))])
     return [di for di in os.listdir(path=path) if os.path.isdir(os.path.join(path,di))]
 
-def save_settings(settings):
+def save_settings(settings): # save settings (the game currently has no settings)
     path = str(Path(getframeinfo(currentframe()).filename).resolve().parent)
     file = path + '\\settings.json'
     with open(file, 'w') as f:
         json.dump(settings, f, indent=2, separators=(',', ':'))
 
-def load_settings():
+def load_settings(): # load settings (the game currently has no settings)
     path = str(Path(getframeinfo(currentframe()).filename).resolve().parent)
     file = path + '\\settings.json'
     with open(file, 'r') as f:
         return json.load(f)
 
-def settings():
+def settings(): # get settings (the game currently has no settings)
     defualt_settings = {}
     if not os.path.exists(str(Path(getframeinfo(currentframe()).filename).resolve().parent) + '\\settings.json'):
         save_settings(defualt_settings)

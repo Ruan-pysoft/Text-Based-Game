@@ -1,5 +1,4 @@
-import items, enemies, tiles, json
-import functions as f
+import items, tiles, json
 
 _world = {}
 starting_position = [0, 0]

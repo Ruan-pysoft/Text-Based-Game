@@ -1,16 +1,19 @@
-import items, enemies, actions, world
+import items, enemies, actions, world, game
 import functions as f
 import mainclasses as mc
 
 class MapTile:
     def __init__(self, x, y, start=False):
-        self.x = x
-        self.y = y
-        self.start = start
-        
+        self.x = x # x position in world
+        self.y = y # y position in world
+        self.start = start # is this where the player should start the game
+
     def intro_text(self):
-        raise NotImplementedError()
-     
+        print(f'''[PLACEHOLDER]
+If you see this you are in a room without intro text!
+Room: {repr(self)}
+Please report this at https://github.com/TBBYT/Turn-Based-Game/issues''')
+
     def modify_player(self, player):
         raise NotImplementedError()
 
@@ -26,7 +29,7 @@ class MapTile:
         if world.tile_exists(self.x, self.y + 1):
             moves.append(actions.MoveSouth())
         return moves
-     
+
     def available_actions(self):
         """Returns all of the available actions in this room."""
         moves = self.adjacent_moves()
@@ -35,12 +38,10 @@ class MapTile:
         moves.append(actions.RestFull())
         moves.append(actions.ViewStats())
         moves.append(actions.Save())
-     
+
         return moves
 
     def __repr__(self):
-        #to return the code that was used to create it, so that I can save the
-        #object in a file or string.
         return 'MapTile({}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.start))
 
     def save(self):
@@ -83,18 +84,23 @@ class MapTile:
         elif data['type'] == 'testPortal':
             return testPortal.load(data)
 
-class StartingRoom(MapTile):
+class StartingRoom(MapTile): # starting room
     def __init__(self, x, y):
         super().__init__(x, y, start=True)
 
     def intro_text(self):
-        return """
+        if game.i == 1:
+            return """
         You find yourself in a cave with a flickering torch on the wall.
         You can make out four paths, each equally as dark and foreboding.
         """
- 
+        else:
+            return """
+        Another unremarkable part of the cave. You must forge onwards.
+        """
+
     def modify_player(self, player):
-        pass
+        pass # does nothing to player
 
     def __repr__(self):
         #to return the code that was used to create it, so that I can save the
@@ -108,13 +114,13 @@ class StartingRoom(MapTile):
     def load(cls, data):
         return cls(data['pos'][0], data['pos'][1])
 
-class LootRoom(MapTile):
+class LootRoom(MapTile): # a room with one item in
     def __init__(self, x, y, item, looted = False):
         self.item = item
         self.looted = looted
         super().__init__(x, y)
- 
-    def add_loot(self, player):
+
+    def add_loot(self, player): # add item to player's inventory
         player.inventory.append(self.item)
         self.item = None
         self.looted = True
@@ -122,7 +128,7 @@ class LootRoom(MapTile):
     def new_loot(self, item):
         self.item = item
         self.looted = False
- 
+
     def modify_player(self, player):
         if self.item != None:
             self.add_loot(player)
@@ -130,8 +136,6 @@ class LootRoom(MapTile):
             pass
 
     def __repr__(self):
-        #to return the code that was used to create it, so that I can save the
-        #object in a file or string.
         return 'LootRoom({}, {}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.item), repr(self.item))
 
     def save(self):
@@ -141,12 +145,12 @@ class LootRoom(MapTile):
     def load(cls, data):
         return cls(data['pos'][0], data['pos'][1], data['item'], data['looted'])
 
-class TresureRoom(MapTile):
+class TresureRoom(MapTile): # like LootRoom, but with multiple items
     def __init__(self, x, y, items, looted = False):
         self.items = items
         self.looted = looted
         super().__init__(x, y)
- 
+
     def add_loot(self, player):
         for item in self.items:
             player.inventory.append(item)
@@ -156,7 +160,7 @@ class TresureRoom(MapTile):
     def new_loot(self, items):
         self.looted = False
         self.items = items
-    
+
     def modify_player(self, player):
         if len(self.items) > 0:
             self.add_loot(player)
@@ -164,8 +168,6 @@ class TresureRoom(MapTile):
             pass
 
     def __repr__(self):
-        #to return the code that was used to create it, so that I can save the
-        #object in a file or string.
         return 'LootRoom({}, {}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.items), repr(self.looted))
 
     def save(self):
@@ -175,7 +177,7 @@ class TresureRoom(MapTile):
     def load(cls, data):
         return cls(data['pos'][0], data['pos'][1], data['items'], data['looted'])
 
-class EnemyRoom(MapTile):
+class EnemyRoom(MapTile): # a room with an enemy in it
     def __init__(self, x, y, enemy, defeat = False):
         self.enemy = enemy
         super().__init__(x, y)
@@ -185,7 +187,7 @@ class EnemyRoom(MapTile):
         for item in self.enemy.inventory:
             player.inventory.append(item)
         self.enemy.inventory = []
- 
+
     def modify_player(self, the_player):
         self.enemy.explode()
         if self.enemy.is_alive():
@@ -220,8 +222,6 @@ class EnemyRoom(MapTile):
             return moves
 
     def __repr__(self):
-        #to return the code that was used to create it, so that I can save the
-        #object in a file or string.
         return 'EnemyRoom({}, {}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.enemy), repr(self.defeat))
 
     def save(self):
@@ -230,20 +230,18 @@ class EnemyRoom(MapTile):
     @classmethod
     def load(cls, data):
         return cls(data['pos'][0], data['pos'][1], data['enemy'], data['defeated'])
-    
-class EmptyCavePath(MapTile):
+
+class EmptyCavePath(MapTile): # empty room
     def intro_text(self):
         return """
         Another unremarkable part of the cave. You must forge onwards.
         """
- 
+
     def modify_player(self, player):
         #Room has no action on player
         pass
 
     def __repr__(self):
-        #to return the code that was used to create it, so that I can save the
-        #object in a file or string.
         return 'EmptyCavePath({}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.start))
 
     def save(self):
@@ -253,10 +251,10 @@ class EmptyCavePath(MapTile):
     def load(cls, data):
         return cls(data['pos'][0], data['pos'][1])
 
-class ExplodingCowRoom(EnemyRoom):
+class ExplodingCowRoom(EnemyRoom): # I think the room's name explains it all
     def __init__(self, x, y, enemy = enemies.CreeperCow(), defeat = False):
         super().__init__(x, y, enemy, defeat)
- 
+
     def intro_text(self):
         if self.enemy.is_alive():
             return """
@@ -268,8 +266,6 @@ class ExplodingCowRoom(EnemyRoom):
             """
 
     def __repr__(self):
-        #to return the code that was used to create it, so that I can save the
-        #object in a file or string.
         return 'ExplodingCowRoom({}, {}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.enemy), repr(self.defeat))
 
     def save(self):
@@ -279,10 +275,10 @@ class ExplodingCowRoom(EnemyRoom):
     def load(cls, data):
         return cls(data['pos'][0], data['pos'][1], data['enemy'], data['defeated'])
 
-class BruteRoom(EnemyRoom):
+class BruteRoom(EnemyRoom): # a room with a Brute enemy in
     def __init__(self, x, y, enemy = enemies.Brute(), defeat = False):
         super().__init__(x, y, enemy, defeat)
- 
+
     def intro_text(self):
         if self.enemy.is_alive():
             return """
@@ -294,8 +290,6 @@ class BruteRoom(EnemyRoom):
             """
 
     def __repr__(self):
-        #to return the code that was used to create it, so that I can save the
-        #object in a file or string.
         return 'BruteRoom({}, {}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.enemy), repr(self.defeat))
 
     def save(self):
@@ -304,17 +298,17 @@ class BruteRoom(EnemyRoom):
     @classmethod
     def load(cls, data):
         return cls(data['pos'][0], data['pos'][1], data['enemy'], data['defeated'])
- 
+
 class StashRoom(TresureRoom):
     def w():
         w = f.randomWeight([0,5,2.5,1.5,1])
         minw = 0.005/4
         maxw = 0.025/4
         return f.randomF(minw, maxw) * w
-    
+
     def __init__(self, x, y, items=[items.Dagger(), items.Diamond(round(w(), 3), False), items.SilverCoin(f.random(25,75)), items.GoldCoin(f.randomF(0.5, 2.0))], looted = False):
         super().__init__(x, y, items, looted)
- 
+
     def intro_text(self):
         if not self.looted:
             return """
@@ -328,8 +322,6 @@ class StashRoom(TresureRoom):
             """
 
     def __repr__(self):
-        #to return the code that was used to create it, so that I can save the
-        #object in a file or string.
         return 'StashRoom({}, {}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.items), repr(self.looted))
 
     def save(self):
@@ -342,7 +334,7 @@ class StashRoom(TresureRoom):
 class CoinsRoom(LootRoom):
     def __init__(self, x, y, item=items.CopperCoin(f.random(10,200)), looted = False):
         super().__init__(x, y, item, looted)
- 
+
     def intro_text(self):
         if not self.looted:
             return """
@@ -355,8 +347,6 @@ class CoinsRoom(LootRoom):
             """
 
     def __repr__(self):
-        #to return the code that was used to create it, so that I can save the
-        #object in a file or string.
         return 'CoinsRoom({}, {}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.item), repr(self.looted))
 
     def save(self):
@@ -371,11 +361,11 @@ class LeaveCaveRoom(MapTile):
         return """
         You see a bright light in the distance...
         ... it grows as you get closer! It's sunlight!
- 
- 
+
+
         Victory is yours!
         """
- 
+
     def modify_player(self, player):
         player.victory = True
 
