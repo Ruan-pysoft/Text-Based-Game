@@ -89,6 +89,7 @@ def save(save): # save the game
     s.save({'turn': i, 'prev. turn': previ}, save, 'game') # save the current turn
 
 def load(save): # load a game
+    import traceback
     try:
         global i
         global previ
@@ -104,6 +105,6 @@ def load(save): # load a game
         print(f''' Something went wrong :(
 =========================
 Please report this at https://github.com/TBBYT/Turn-Based-Game/issues
-Error:
-{e}''')
+Error:''')
+        traceback.print_exc()
         input()

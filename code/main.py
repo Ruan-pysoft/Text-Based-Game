@@ -1,3 +1,5 @@
+import traceback
+
 try:
     import menus as m # Used to display menus
     import os
@@ -21,5 +23,5 @@ except Exception as e:
     print(f''' Something went wrong :(
 =========================
 Please report this at https://github.com/TBBYT/Turn-Based-Game/issues
-Error:
-{e}''')
+Error:''')
+    traceback.print_exc()
