@@ -139,7 +139,10 @@ class LootRoom(MapTile): # a room with one item in
         return 'LootRoom({}, {}, {}, {})'.format(repr(self.x), repr(self.y), repr(self.item), repr(self.item))
 
     def save(self):
-        return {'type': 'LootRoom', 'pos': [self.x, self.y], 'item': self.item.save(), 'looted': self.looted}
+        if item is not None:
+            return {'type': 'LootRoom', 'pos': [self.x, self.y], 'item': self.item.save(), 'looted': self.looted}
+        else:
+            return {'type': 'LootRoom', 'pos': [self.x, self.y], 'item': None, 'looted': self.looted}
 
     @classmethod
     def load(cls, data):
