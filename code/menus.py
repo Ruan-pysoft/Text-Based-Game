@@ -78,14 +78,16 @@ def getmap():
             maps.append('.'.join(file.split('.')[:-1]))
     for m in maps:
         print(m)
+    print('\n')
     def get_map():
-            m = input('Choose a save: ')
+            m = input('Choose a map: ')
             if m not in maps:
                 print("That isn't a valid map!")
                 get_map()
             else:
                 return m
     m = get_map() # for some reason this is neaded because "return get_map()" either doesn't return or returns None
+    clear()
     return m
 
 class NewGame(Menu): # start a new game
@@ -117,5 +119,6 @@ class OldGame(Menu):
                 get_action()
         get_action()
         import game
+        clear()
         game.play(self.action, l=True) # continue playing on that save
         TitleScreen()
