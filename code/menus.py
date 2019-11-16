@@ -76,12 +76,16 @@ def getmap():
     for file in os.listdir("./resources"):
         if file.endswith(".map"):
             maps.append('.'.join(file.split('.')[:-1]))
-    for m in maps:
-        print(m)
+    for i, m in enumerate(maps, 1):
+        print(f'{i}) {m}')
     print('\n')
     def get_map():
             m = input('Choose a map: ')
-            if m not in maps:
+            try:
+                m = int(m)
+            except:
+                print("That isn't a valid map!")
+            if int(m) > len(maps) or int(m) < 1:
                 print("That isn't a valid map!")
                 get_map()
             else:
@@ -108,13 +112,20 @@ class OldGame(Menu):
 
     def show(self):
         print(f'Load a Game:\n ========= \n\n')
-        for a in self.actions:
-            print(f'{a}') # list all the saves
+        for i, a in enumerate(self.actions, 1):
+            print(f'{i}) {a}') # list all the saves
+            
+         print('\n')
 
         self.action = -1
         def get_action():
             self.action = input('Choose a save: ')
-            if self.action not in self.actions:
+            try:
+                self.action = int(self.action)
+            except:
+                print("That isn't a valid save!")
+                get_action()
+            if int(self.action) > len(self.actions) or int(self.action) < 1:
                 print("That isn't a valid save!")
                 get_action()
         get_action()
