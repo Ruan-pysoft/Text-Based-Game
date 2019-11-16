@@ -9,5 +9,3 @@ Windows:
     Run "game.bat"
 Linux:
     Run "game.sh"
-
-Atom Teletype Portal: atom://teletype/portal/5148c414-2c1b-49c1-88c6-e90ea1a1c93b
