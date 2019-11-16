@@ -13,6 +13,8 @@ def make_player():
     return p.Player()
 
 def play(m, l=False): #Set l to True if you're loading a save False not a map
+    global i
+    global previ
     previ = 0
     i = 1 # game turn 1: the player spawns in
     if not l: # if you're loading a map
