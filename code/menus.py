@@ -78,9 +78,11 @@ def getmap():
             maps.append('.'.join(file.split('.')[:-1]))
     for i, m in enumerate(maps, 1):
         print(f'{i}) {m}')
-    print('\n')
+    print('Q) Quit to Title\n')
     def get_map():
             m = input('Choose a map: ')
+            if m.lower() == 'q':
+                TitleScreen()
             try:
                 m = int(m)
             except:
@@ -114,12 +116,14 @@ class OldGame(Menu):
         print(f'Load a Game:\n ========= \n\n')
         for i, a in enumerate(self.actions, 1):
             print(f'{i}) {a}') # list all the saves
-            
-         print('\n')
+
+        print('Q) Quit to Title\n')
 
         self.action = -1
         def get_action():
             self.action = input('Choose a save: ')
+            if self.action.lower() == 'q':
+                TitleScreen()
             try:
                 self.action = int(self.action)
             except:

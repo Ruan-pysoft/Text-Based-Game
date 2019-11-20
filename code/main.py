@@ -25,3 +25,4 @@ except Exception as e:
 Please report this at https://github.com/TBBYT/Turn-Based-Game/issues
 Error:''')
     traceback.print_exc()
+    input('Press ENTER to close window')

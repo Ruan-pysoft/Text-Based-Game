@@ -109,4 +109,4 @@ def load(save): # load a game
 Please report this at https://github.com/TBBYT/Turn-Based-Game/issues
 Error:''')
         traceback.print_exc()
-        input()
+        input('Press ENTER to quit to title')
