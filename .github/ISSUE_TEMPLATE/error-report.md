@@ -1,24 +1,21 @@
 ---
-name: Bug report
+name: Error report
 about: Create a report to help us improve the game
-title: "[BUG]"
-labels: bug
+title: "[ERROR]"
+labels: error
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Describe the error**
+Paste the error log here (you may want to replace your username with USER or something).
 
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
-4. Bug happens
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+4. See error
 
 **Console output**
 If applicable,copy & paste console output here.
