@@ -91,7 +91,7 @@ def getmap():
                 print("That isn't a valid map!")
                 get_map()
             else:
-                return m
+                return maps[m - 1]
     m = get_map() # for some reason this is neaded because "return get_map()" either doesn't return or returns None
     clear()
     return m
@@ -127,7 +127,7 @@ class OldGame(Menu):
             try:
                 self.action = int(self.action)
             except:
-                print("That isn't a valid save!")
+                print("That isn't a valid number!")
                 get_action()
             if int(self.action) > len(self.actions) or int(self.action) < 1:
                 print("That isn't a valid save!")
@@ -135,5 +135,5 @@ class OldGame(Menu):
         get_action()
         import game
         clear()
-        game.play(self.action, l=True) # continue playing on that save
+        game.play(self.actions[self.action - 1], l=True) # continue playing on that save
         TitleScreen()

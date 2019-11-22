@@ -149,12 +149,17 @@ class Player: # player object
             savegame()
         elif o == '2': # load a game
             print('Saves:')
-            print(save.list_saves())
-            o = input("Wich save do you want to load? ")
-            if Path(f.path()+"/saves/"+str(o)+"/game.json").is_file():
-                game.load(o)
-            else:
-                print("That save does not exsist!")
+            for i, a in enumerate(save.list_saves(), 1):
+                print(f'{i}) {a}') # list all the saves
+            o = input("Which save do you want to load? ")
+            try:
+                o = int(o)
+                if int(o) > len(save.list_saves()) or int(o) < 1:
+                    print("That isn't a valid save!")
+                else:
+                    game.load(save.list_saves()[o - 1])
+            except:
+                print("That isn't a valid number!")
         elif o == '3': # quit game
             import menus
             yn = input("Do you want to save first?\n(Y/N) ")
