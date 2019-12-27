@@ -3,8 +3,14 @@ import json, os
 from inspect import currentframe, getframeinfo
 from pathlib import Path
 
+def make_valid_file(name):
+    invalid_symbols = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
+    for s in invalid_symbols:
+        name = name.replace(s, '_')
+    return name
+
 def save(data, save, file): # save data to a save
-    path = str(Path(getframeinfo(currentframe()).filename).resolve().parent) + str(Path(f'/saves/{save}/'))
+    path = str(Path(getframeinfo(currentframe()).filename).resolve().parent) + str(Path(f'/saves/{make_valid_file(save)}/'))
     file = path + f'\\{file}.json'
     if not os.path.exists(path):
         os.makedirs(path)
