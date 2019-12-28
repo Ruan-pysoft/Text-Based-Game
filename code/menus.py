@@ -150,7 +150,7 @@ class OldGame(Menu):
 class Tutorial(Menu):
     def __init__(self):
         import save
-        super().__init__(name='Load a Game', actions=save.list_saves())
+        super().__init__(name='Load a Game', actions=[])
 
     def show(self):
         with open('./tutorial.info', 'r') as f:
@@ -162,10 +162,11 @@ class Tutorial(Menu):
             print(t[0])
             input(t[1])
             clear()
+        TitleScreen()
 
 class Help(Menu):
     def __init__(self):
-        super().__init__(name='Help Menu', actions=[MainMenu()])
+        super().__init__(name='Help Menu', actions=[])
 
     def show(self):
         import os
@@ -178,4 +179,4 @@ class Help(Menu):
             h = f.read()
         print(h.format(tutorial+1))
         input('Press ENTER to return to main menu.')
-        self.actions[0].method() # Go to main menu
+        TitleScreen()
