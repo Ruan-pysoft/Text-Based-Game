@@ -16,8 +16,9 @@ Tutorial:
     Q) Quit to Title
 
     Choose a map:
-On this screen you are expected to select a map to play on. You select a map by typing the number in front of the ")" and then pressing ENTER. You can also quit to title using "Q" or "q" in stead of a number.
-In this tutorial we will asume you have selected "basic world", one of the two defualt maps that comes with the game, and is map 1 by defualt.
+  On this screen you are expected to select a map to play on. You select a map by typing the number in front of the ")" and then pressing ENTER.
+  You can also quit to title using "Q" or "q" in stead of a number.
+  In this tutorial we will asume you have selected "basic world", one of the two defualt maps that comes with the game, and is map 1 by defualt.
 
 %CONTINUE%
 Press ENTER to continue... 
@@ -50,7 +51,8 @@ Press ENTER to discover the sections...
             You find yourself in a cave with a flickering torch on the wall.
             You can make out four paths, each equally as dark and foreboding.
 
-  This is just so that you know what the room you are in looks like, and has no pupose except to make the game playable. (Without it, it would be like stumbling around, deaf and blind in the map, only knowing in what direction you can go, what items you have, and how hurt you are)
+  This is just so that you know what the room you are in looks like, and has no pupose except to make the game playable.
+  (Without it, it would be like stumbling around, deaf and blind in the map, only knowing in what direction you can go, what items you have, and how hurt you are)
 
 SECTION II: Play turn:
 
@@ -87,14 +89,14 @@ Press ENTER to find out what stuff you can do...
   Let me explain. You're in a world, so let me draw (badly drawn) a map for you:
 ____________
 |      !!  |
-|  ¢¢__:(  |
+|  Â¢Â¢__:(  |
 |    __    |
 |    __    |
 |##__::__$$|
-|    ¢¢    |
+|    Â¢Â¢    |
 |    __    |
 |    :(    |
-¯¯¯¯¯¯¯¯¯¯¯¯
+Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
   So, to clarify, every two symbols next to each other are one room. So let me give you the map key:
 
     KEY:
@@ -102,11 +104,13 @@ ____________
        = Nothing, can't go here
     __ = Empty room
     :( = Room with a certain enemy in it
-    ¢¢ = Room with only a coin in it
+    Â¢Â¢ = Room with only a coin in it
     $$ = Room with a lot of loot in it
     ## = Room with an enemy in it that can explode if it has low health
 
-  As you can see, there are rooms surounding you on all sides, and because of that you can move in four directions (you cannot move diagnally). If you were to select "d" (by pressing the "d" key and then pressing ENTER), you would go "left" on this map, and "a" would make you go "right". If you were to select "w" you would go "up", and "s" would make you go "down".
+  As you can see, there are rooms surounding you on all sides, and because of that you can move in four directions (you cannot move diagnally).
+  If you were to select "d" (by pressing the "d" key and then pressing ENTER), you would go "left" on this map, and "a" would make you go "right".
+  If you were to select "w" you would go "up", and "s" would make you go "down".
 
 %CONTINUE%
 Press ENTER to find out what other stuff you can do... 
@@ -155,11 +159,14 @@ Press ENTER to find out what other stuff you can do...
     Explotion: -31.0%
     ==========
 
-  As you can see, this game's damage system is not as simple as it may look at first glance (NOTE: Your resistances are randomly generated within a certain range every time you start a new game). It has three types of damage: Blunt damage, Sharpness damage and Explotion damage. You may be confused about the negitive Explotion damage, but all that it means is that if something deals 10 explotion damage to you, your health will go down with 13.1 HP, instead of 9.1 HP, if it was sharpness damage.
+  As you can see, this game's damage system is not as simple as it may look at first glance
+  (NOTE: Your resistances are randomly generated within a certain range every time you start a new game).
+  It has three types of damage: Blunt damage, Sharpness damage and Explotion damage. You may be confused about the negitive Explotion damage,
+  but all that it means is that if something deals 10 explotion damage to you, your health will go down with 13.1 HP, instead of 9.1 HP, if it was sharpness damage.
   And lastly, you can save your game, load a old save, or quit to the main menu.
 
 %CONTINUE%
-Press ENTER to find out how to save/load/quit... 
+Press ENTER to find out how to save/load... 
 %ENDPAGE%
   SAVING YOUR GAME:
   This is how to save a game:
@@ -195,7 +202,10 @@ Press ENTER to find out how to save/load/quit...
       Which save do you want to load? 1
 
       Play Turn 1, Choose an Action:
-  QUIT TO MAIN:
+%CONTINUE%
+Press ENTER learn how to quit to title screen... 
+%ENDPAGE%
+  QUIT TO TITLE SCREEN:
   And lastly, how to quit a game:
 
     1) Select "Menu"
@@ -220,7 +230,6 @@ Press ENTER to find out how to save/load/quit...
       b.
         i: Choose "N":
           (Y/N) n
-          Give the save a name:
         Title Screen:
          ===========
 
