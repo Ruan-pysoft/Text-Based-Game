@@ -52,7 +52,7 @@ class ViewStats(Action): # used to check health
 
 class RestFull(Action): # use to rest untill fully healed (or dead)
     def __init__(self):
-        super().__init__(method=Player.rr, name="Rest until healed (DANGEROUS IF FIGHTING ENEMY!)", hotkey='R')
+        super().__init__(method=Player.rr, name="Rest until healed", hotkey='R')
 
 class Save(Action): # used to save, load or quit the game
     def __init__(self):

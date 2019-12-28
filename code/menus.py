@@ -153,7 +153,7 @@ class Tutorial(Menu):
         super().__init__(name='Load a Game', actions=[])
 
     def show(self):
-        with open('./tutorial.info', 'r') as f:
+        with open('./tutorial.info', 'r', encoding='utf-8') as f:
             tutorial = f.read().split('\n%ENDPAGE%\n')
         for i, t in enumerate(tutorial):
             a, b = t.split('%CONTINUE%\n')
@@ -175,7 +175,7 @@ class Help(Menu):
         for i, _ in enumerate(TitleScreen.actions):
             if _.name == 'View Tutorial':
                 tutorial = i
-        with open('./help.info', 'r') as f:
+        with open('./help.info', 'r', encoding='utf-8') as f:
             h = f.read()
         print(h.format(tutorial+1))
         input('Press ENTER to return to main menu.')

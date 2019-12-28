@@ -9,7 +9,7 @@ class Player: # player object
         self.strength = 10 # used to determine how much damage the player should deal
         self.toughness = 10 # used to determine how much health the player should have
         self.base_damage = 0.1*self.strength # damage player deals
-        self.inventory = [items.SilverCoin(f.random(10,20)), items.Rock()] # inventory
+        self.inventory = [] # inventory
         self.maxHP = 5*self.toughness # max amount of health player can have
         self.hp = 5*self.toughness # current amount of health player has
         self.location_x, self.location_y = world.starting_position # player's position
@@ -92,18 +92,30 @@ class Player: # player object
 
     def attack(self, enemy): # attack something
         #TODO: let player choose weapon
-        best_weapon = None
+        weapon = None
+        weapons = []
         max_dmg = 0
         for i in self.inventory:
             if isinstance(i, items.Weapon):
-                if i.damage > max_dmg:
-                    max_dmg = i.damage
-                    best_weapon = i
-        if best_weapon != None:
-            print("\nYou use {} against {}!".format(best_weapon.name, enemy.name))
-            blunt = best_weapon.blunt_damage - (enemy.blunt_res*best_weapon.blunt_damage)
-            sharp = best_weapon.sharp_damage - (enemy.sharp_res*best_weapon.sharp_damage)
-            ex = best_weapon.ex_damage - (enemy.ex_res*best_weapon.ex_damage)
+                weapons.append(i)
+        if len(weapons) > 0:
+            print(f'\nWeapons:\n-------\n\n0: Fists, Damage: {self.base_damage}')
+            for i, w in enumerate(weapons):
+                print(str(i+1) + ': ' + w.str)
+        def get_weapon():
+            if len(weapons) == 0: return None
+            try:
+                i = int(input('What weapon do you want to use? '))
+                if i == 0: return None
+                if i < 0: return get_weapon()
+                return weapons[int(i)-1]
+            except: return get_weapon()
+        weapon = get_weapon()
+        if weapon != None:
+            print("\nYou use {} against {}!".format(weapon.name, enemy.name))
+            blunt = weapon.blunt_damage - (enemy.blunt_res*weapon.blunt_damage)
+            sharp = weapon.sharp_damage - (enemy.sharp_res*weapon.sharp_damage)
+            ex = weapon.ex_damage - (enemy.ex_res*weapon.ex_damage)
             enemy.hp -= (blunt + sharp + ex)
         else:
             print("\nYou punch {}!".format(enemy.name))

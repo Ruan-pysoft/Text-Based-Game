@@ -111,6 +111,10 @@ class Weapon(Item): # base for all (non-ranged non-magic) weapons
     def __str__(self):
         return "{}\n=====\n{}\nValue: {}\nDamage: {}".format(self.name, self.description, self.value, self.damage)
 
+    @property
+    def str(self):
+        return "{}, Damage: {}".format(self.name, self.damage)
+
     def save(self):
         return {'type': 'Weapon',
                 'name': self.name, 'description': self.description,

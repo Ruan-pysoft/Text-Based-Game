@@ -56,7 +56,7 @@ def play(m, l=False): #Set l to True if you're loading a save False not a map
                         player.heal(0.5)
                         player.do_action(action, **action.kwargs)
                         break
-                elif action_input == action.hotkey and action.name == "View inventory": # View inventory
+                elif action_input == action.hotkey and action.name == "View Inventory": # View inventory
                     previ = i
                     player.do_action(action, **action.kwargs)
                 elif action_input == action.hotkey and action.name == "View stats": # View health
