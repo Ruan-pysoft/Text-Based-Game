@@ -53,6 +53,8 @@ Please report this at https://github.com/TBBYT/Turn-Based-Game/issues''')
             return cls(data['pos'][0], data['pos'][1], start=data['start'])
         elif data['type'] == 'StartingRoom':
             return StartingRoom.load(data)
+        elif data['type'] == 'SpawnPoint':
+            return SpawnPoint.load(data)
         elif data['type'] == 'TestStart':
             return TestStart.load(data)
         elif data['type'] == 'LootRoom':
@@ -63,6 +65,10 @@ Please report this at https://github.com/TBBYT/Turn-Based-Game/issues''')
             return EnemyRoom.load(data)
         elif data['type'] == 'EmptyCavePath':
             return EmptyCavePath.load(data)
+        elif data['type'] == 'Clearing':
+            return Clearing.load(data)
+        elif data['type'] == 'Forest':
+            return Forest.load(data)
         elif data['type'] == 'ExplodingCowRoom':
             return ExplodingCowRoom.load(data)
         elif data['type'] == 'BruteRoom':
@@ -148,7 +154,7 @@ class SpawnPoint(TresureRoom): # starting room
         self.start=True
 
     def save(self):
-        return {'type': 'StartingRoom', 'pos': [self.x, self.y]}
+        return {'type': 'SpawnPoint', 'pos': [self.x, self.y]}
 
     @classmethod
     def load(cls, data):
@@ -272,6 +278,61 @@ class EmptyCavePath(MapTile): # empty room
 
     def save(self):
         return {'type': 'EmptyCavePath', 'pos': [self.x, self.y]}
+
+    @classmethod
+    def load(cls, data):
+        return cls(data['pos'][0], data['pos'][1])
+
+class CaveMouth(MapTile): # empty room
+    def intro_text(self):
+        return """
+        You see a bright light in the distance...
+        ... it grows as you get closer! It's sunlight!
+
+        As you walk towards the light, you can see that it is the mouth of a cave.
+        """
+
+    def modify_player(self, player):
+        #Room has no action on player
+        pass
+
+    def save(self):
+        return {'type': 'CaveMouth', 'pos': [self.x, self.y]}
+
+    @classmethod
+    def load(cls, data):
+        return cls(data['pos'][0], data['pos'][1])
+
+class Forest(MapTile): # empty room
+    def intro_text(self):
+        return """
+        You find yourself surrounded with dense trees.
+        You should stay on the path.
+        """
+
+    def modify_player(self, player):
+        #Room has no action on player
+        pass
+
+    def save(self):
+        return {'type': 'Forest', 'pos': [self.x, self.y]}
+
+    @classmethod
+    def load(cls, data):
+        return cls(data['pos'][0], data['pos'][1])
+
+class Clearing(MapTile): # empty room
+    def intro_text(self):
+        return """
+        You find a clearing full of grass.
+        """
+
+    def modify_player(self, player):
+        #Room has no action on player
+        pass
+
+    def save(self):
+        return {'type': 'Clearing', 'pos': [self.x, self.y]}
 
     @classmethod
     def load(cls, data):

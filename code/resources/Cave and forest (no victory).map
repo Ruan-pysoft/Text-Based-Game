@@ -1,0 +1,16 @@
+						CoinsRoom		BruteRoom	Forest	Forest	Forest	Forest	Forest		Forest	Forest	Clearing	Forest	Forest	Forest	Forest
+						EmptyCavePath	CaveMouth	Forest	Forest	Clearing	Forest	BruteRoom	Forest	Forest		Forest	Forest	BruteRoom	Forest	Forest	Forest
+					CoinsRoom	EmptyCavePath		Forest	Forest	Forest	Forest	Forest	BruteRoom	Forest	BruteRoom		Forest	Forest	Forest	ExplodingCowRoom	Forest
+		BruteRoom				ExplodingCowRoom	CoinsRoom		Forest	Forest	BruteRoom	Forest	Forest	Forest	Forest	Forest		Forest	Forest	Forest	Forest
+BruteRoom	EmptyCavePath	EmptyCavePath	CoinsRoom			EmptyCavePath		Forest	Clearing	Forest	Forest	ExplodingCowRoom	Forest	BruteRoom	Forest	Forest	Forest			Forest	Forest
+	EmptyCavePath			StashRoom		BruteRoom		Forest	Forest	Forest	Forest	Forest	BruteRoom	ExplodingCowRoom	Clearing	Forest	Forest	Forest	Forest	Forest	Forest
+	EmptyCavePath		EmptyCavePath	EmptyCavePath	EmptyCavePath	EmptyCavePath	BruteRoom		BruteRoom	Forest	Clearing	Forest	Forest	Forest	Forest	Clearing	Forest	Forest	Forest	ExplodingCowRoom	Forest
+	EmptyCavePath	EmptyCavePath	EmptyCavePath				CoinsRoom		Forest	Forest	Forest	BruteRoom	Forest	Forest	Forest	Forest	Forest	Forest	Forest	Forest	Forest
+			EmptyCavePath	EmptyCavePath		Forest		Forest	BruteRoom	Forest	Forest	Forest	BruteRoom	Forest	BruteRoom	Forest		Forest	Forest	Forest	
+				EmptyCavePath		Forest	Forest	ExplodingCowRoom	Forest	Clearing	Forest	Forest	Forest								
+	EmptyCavePath	EmptyCavePath	EmptyCavePath	EmptyCavePath			Forest	Forest	ExplodingCowRoom	Forest	BruteRoom	Forest									
+EmptyCavePath	EmptyCavePath		EmptyCavePath	StartingRoom	StashRoom	CoinsRoom		Forest	Forest	BruteRoom	Forest	ExplodingCowRoom									
+BruteRoom		EmptyCavePath		EmptyCavePath				BruteRoom	Forest	Forest											
+EmptyCavePath	StashRoom	EmptyCavePath		CoinsRoom																	
+EmptyCavePath	EmptyCavePath	EmptyCavePath		EmptyCavePath																	
+		CoinsRoom																			
