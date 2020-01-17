@@ -11,10 +11,14 @@ class Gold(Item): # you can't have a game without gold!
                          # the values when I origionally made this game. I can't
                          # remember if it was in USD or ZAR
 
-    def save(self):
-        return {'type': 'Gold',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'weight': self.weight}
+    @property
+    def full_str(self):
+        return f'''{repr(self)}:
+  Variables:
+    weight = {repr(self.weight)}
+    name = {repr(self.name)}
+    description = {repr(self.description)}
+    value = {repr(self.value)}'''
 
 class GoldCoin(Item): # neither can you have a game without coins
     def __init__(self, amt): # (except for Minecraft and Terasology and... actually a lot of games)
@@ -23,10 +27,14 @@ class GoldCoin(Item): # neither can you have a game without coins
                          description="A round coin with {} stamped on the front.".format(str(self.amt)),
                          value=self.amt*100)
 
-    def save(self):
-        return {'type': 'GoldCoin',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'amt': self.amt}
+    @property
+    def full_str(self):
+        return f'''{repr(self)}:
+  Variables:
+    amt = {repr(self.amt)}
+    name = {repr(self.name)}
+    description = {repr(self.description)}
+    value = {repr(self.value)}'''
 
 class Silver(Item):
     def __init__(self, weight):
@@ -35,10 +43,14 @@ class Silver(Item):
                          description="A piece of silver weighing {} grammes.".format(str(self.weight*1000)),
                          value=self.weight*7000)
 
-    def save(self):
-        return {'type': 'Silver',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'weight': self.weight}
+    @property
+    def full_str(self):
+        return f'''{repr(self)}:
+  Variables:
+    weight = {repr(self.weight)}
+    name = {repr(self.name)}
+    description = {repr(self.description)}
+    value = {repr(self.value)}'''
 
 class SilverCoin(Item):
     def __init__(self, amt):
@@ -47,10 +59,14 @@ class SilverCoin(Item):
                          description="A round coin with {} stamped on the front.".format(str(self.amt)),
                          value=self.amt)
 
-    def save(self):
-        return {'type': 'SilverCoin', 'name': self.name,
-                'description': self.description, 'value': self.value,
-                'amt': self.amt}
+    @property
+    def full_str(self):
+        return f'''{repr(self)}:
+  Variables:
+    amt = {repr(self.amt)}
+    name = {repr(self.name)}
+    description = {repr(self.description)}
+    value = {repr(self.value)}'''
 
 class Copper(Item):
     def __init__(self, weight):
@@ -59,10 +75,14 @@ class Copper(Item):
                          description="A gold nugget weighing {} grammes.".format(str(self.weight*1000)),
                          value=self.weight*90)
 
-    def save(self):
-        return {'type': 'Copper',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'weight': self.weight}
+    @property
+    def full_str(self):
+        return f'''{repr(self)}:
+  Variables:
+    weight = {repr(self.weight)}
+    name = {repr(self.name)}
+    description = {repr(self.description)}
+    value = {repr(self.value)}'''
 
 class CopperCoin(Item):
     def __init__(self, amt):
@@ -71,10 +91,14 @@ class CopperCoin(Item):
                          description="A round coin with {} stamped on the front.".format(str(self.amt)),
                          value=self.amt*0.01)
 
-    def save(self):
-        return {'type': 'CopperCoin',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'amt': self.amt}
+    @property
+    def full_str(self):
+        return f'''{repr(self)}:
+  Variables:
+    amt = {repr(self.amt)}
+    name = {repr(self.name)}
+    description = {repr(self.description)}
+    value = {repr(self.value)}'''
 
 class Diamond(Item):
     def __init__(self, weight, cut):
@@ -89,11 +113,14 @@ class Diamond(Item):
                          description="A {} diamond weighing {} grammes.".format(self.cut, str(self.weight*1000)),
                          value=self.value)
 
-    def save(self):
-        return {'type': 'Diamond',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'weight': self.weight,
-                'cut': self.cut}
+    @property
+    def full_str(self):
+        return f'''{repr(self)}:
+  Variables:
+    weight = {repr(self.weight)}
+    name = {repr(self.name)}
+    description = {repr(self.description)}
+    value = {repr(self.value)}'''
 
 class Weapon(Item): # base for all (non-ranged non-magic) weapons
     def __init__(self, name, description, value, damage, sharp, blunt, explotion):
@@ -102,11 +129,19 @@ class Weapon(Item): # base for all (non-ranged non-magic) weapons
         self.blunt_rat = blunt # how much of that damage is blunt damage
         self.explotion_rat = explotion  # how much of that damage is explotion damage
 
-        self.sharp_damage = self.damage*self.sharp_rat
-        self.blunt_damage = self.damage*self.blunt_rat
-        self.ex_damage = self.damage*self.explotion_rat
-
         super().__init__(name, description, value)
+
+    @property
+    def sharp_damage(self):
+        return self.damage*self.sharp_rat
+
+    @property
+    def blunt_damage(self):
+        return self.damage*self.blunt_rat
+
+    @property
+    def ex_damage(self):
+        return self.damage*self.explotion_rat
 
     def __str__(self):
         return "{}\n=====\n{}\nValue: {}\nDamage: {}".format(self.name, self.description, self.value, self.damage)
@@ -115,13 +150,21 @@ class Weapon(Item): # base for all (non-ranged non-magic) weapons
     def str(self):
         return "{}, Damage: {}".format(self.name, self.damage)
 
-    def save(self):
-        return {'type': 'Weapon',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'damage': self.damage,
-                'sharp_rat': self.sharp_rat, 'blunt_rat': self.blunt_rat,
-                'explotion_rat': self.explotion_rat, 'sharp_damage': self.sharp_damage,
-                'blunt_damage': self.blunt_damage, 'ex_damage': self.ex_damage}
+    @property
+    def full_str(self):
+        return f'''{repr(self)}:
+  Variables:
+    damage = {repr(self.damage)}
+    sharp_rat = {repr(self.sharp_rat)}
+    blunt_rat = {repr(self.blunt_rat)}
+    explotion_rat = {repr(self.explotion_rat)}
+    name = {repr(self.name)}
+    description = {repr(self.description)}
+    value = {repr(self.value)}
+  Read-only:
+    sharp_damage = {repr(self.sharp_damage)}
+    blunt_damage = {repr(self.blunt_damage)}
+    ex_damage = {repr(self.ex_damage)}'''
 
 
 class Rock(Weapon):
@@ -135,15 +178,6 @@ class Rock(Weapon):
                          blunt=1.0-self.sharp,
                          explotion=0)
 
-    def save(self):
-        return {'type': 'Rock',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'damage': self.damage,
-                'sharp_rat': self.sharp_rat, 'blunt_rat': self.blunt_rat,
-                'explotion_rat': self.explotion_rat, 'sharp_damage': self.sharp_damage,
-                'blunt_damage': self.blunt_damage, 'ex_damage': self.ex_damage,
-                'sharp': self.sharp}
-
 class Dagger(Weapon):
     def __init__(self):
         self.sharp = f.randomF(0.6,0.99,2)
@@ -154,15 +188,6 @@ class Dagger(Weapon):
                          sharp=self.sharp,
                          blunt=1.0-self.sharp,
                          explotion=0)
-
-    def save(self):
-        return {'type': 'Dagger',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'damage': self.damage,
-                'sharp_rat': self.sharp_rat, 'blunt_rat': self.blunt_rat,
-                'explotion_rat': self.explotion_rat, 'sharp_damage': self.sharp_damage,
-                'blunt_damage': self.blunt_damage, 'ex_damage': self.ex_damage,
-                'sharp': self.sharp}
 
 class Sword(Weapon):
     def __init__(self):
@@ -175,15 +200,6 @@ class Sword(Weapon):
                          blunt=1.0-self.sharp,
                          explotion=0)
 
-    def save(self):
-        return {'type': 'Sword',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'damage': self.damage,
-                'sharp_rat': self.sharp_rat, 'blunt_rat': self.blunt_rat,
-                'explotion_rat': self.explotion_rat, 'sharp_damage': self.sharp_damage,
-                'blunt_damage': self.blunt_damage, 'ex_damage': self.ex_damage,
-                'sharp': self.sharp}
-
 class BlankWeapon(Weapon):
     def __init__(self, name, description, value, damage, sharp, blunt, explotion):
         super().__init__(name=name,
@@ -193,11 +209,3 @@ class BlankWeapon(Weapon):
                          sharp=sharp,
                          blunt=blunt,
                          explotion=explotion)
-
-    def save(self):
-        return {'type': 'BlankWeapon',
-                'name': self.name, 'description': self.description,
-                'value': self.value, 'damage': self.damage,
-                'sharp_rat': self.sharp_rat, 'blunt_rat': self.blunt_rat,
-                'explotion_rat': self.explotion_rat, 'sharp_damage': self.sharp_damage,
-                'blunt_damage': self.blunt_damage, 'ex_damage': self.ex_damage}

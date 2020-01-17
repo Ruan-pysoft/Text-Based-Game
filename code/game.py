@@ -86,8 +86,8 @@ def save(save): # save the game
     global player
     if player == None:
         player = make_player()
-    s.save(player.save(), save, 'player') # save the player
-    s.save(world.save(), save, 'world') # save the world (no this isn't something the player does :P)
+    s.save(player, save, 'player') # save the player
+    s.save(world._world, save, 'world') # save the world (no this isn't something the player does :P)
     s.save({'turn': i, 'prev. turn': previ}, save, 'game') # save the current turn
 
 def load(save): # load a game
@@ -96,13 +96,11 @@ def load(save): # load a game
         global i
         global previ
         global player
-        if player == None:
-            player = make_player()
-        player.load(s.load(save, 'player')) # load the player
+        player = s.load(save, 'player') # load the player
         world.load(s.load(save, 'world')) #load the world
         data = s.load(save, 'game') # retrieve game data
         i = data['turn'] # set current turn
-        pevi = data['prev. turn'] # set previous turn
+        previ = data['prev. turn'] # set previous turn
     except Exception as e:
         print(f''' Something went wrong :(
 =========================

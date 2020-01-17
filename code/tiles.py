@@ -2,6 +2,12 @@ import items, enemies, actions, world, game
 import functions as f
 import mainclasses as mc
 
+def init_class(X, *y, **z):
+    x = X(*y, **z)
+    x.__init__(*y, **z)
+    print(type(x))
+    return x
+
 class MapTile:
     def __init__(self, x, y, start=False):
         self.x = x # x position in world
@@ -42,55 +48,33 @@ Please report this at https://github.com/TBBYT/Turn-Based-Game/issues''')
 
         return moves
 
-    def save(self):
-        return {'type': 'MapTile', 'pos': [self.x, self.y], 'start': self.start}
+    @property
+    def str(self):
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
+    x = {repr(self.x)}
+    y = {repr(self.y)}
+    start = {repr(self.start)}
+  Read-only:
+    available_actions() = {repr(self.available_actions())}
+    adjacent_moves() = {repr(self.adjacent_moves())}
+    intro_text() = {self.intro_text()}'''
 
-    @classmethod
-    def load(cls, data):
-        if data == None:
-            return None
-        elif data['type'] == 'MapTile':
-            return cls(data['pos'][0], data['pos'][1], start=data['start'])
-        elif data['type'] == 'StartingRoom':
-            return StartingRoom.load(data)
-        elif data['type'] == 'SpawnPoint':
-            return SpawnPoint.load(data)
-        elif data['type'] == 'TestStart':
-            return TestStart.load(data)
-        elif data['type'] == 'LootRoom':
-            return LootRoom.load(data)
-        elif data['type'] == 'TresureRoom':
-            return TresureRoom.load(data)
-        elif data['type'] == 'EnemyRoom':
-            return EnemyRoom.load(data)
-        elif data['type'] == 'EmptyCavePath':
-            return EmptyCavePath.load(data)
-        elif data['type'] == 'Clearing':
-            return Clearing.load(data)
-        elif data['type'] == 'Forest':
-            return Forest.load(data)
-        elif data['type'] == 'ExplodingCowRoom':
-            return ExplodingCowRoom.load(data)
-        elif data['type'] == 'BruteRoom':
-            return BruteRoom.load(data)
-        elif data['type'] == 'StashRoom':
-            return StashRoom.load(data)
-        elif data['type'] == 'CoinsRoom':
-            return CoinsRoom.load(data)
-        elif data['type'] == 'LeaveCaveRoom':
-            return LeaveCaveRoom.load(data)
-        elif data['type'] == 'otherMap':
-            return otherMap.load(data)
-        elif data['type'] == 'pitToSmallCave':
-            return pitToSmallCave.load(data)
-        elif data['type'] == 'caveLabrinth':
-            return caveLabrinth.load(data)
-        elif data['type'] == 'testPortal':
-            return testPortal.load(data)
+    @property
+    def full_str(self):
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
+    x = {repr(self.x)}
+    y = {repr(self.y)}
+    start = {repr(self.start)}
+  Read-only:
+    available_actions() = {repr(self.available_actions())}
+    adjacent_moves() = {repr(self.adjacent_moves())}
+    intro_text() = {self.intro_text()}'''
 
 class LootRoom(MapTile): # a room with one item in
     def __init__(self, x, y, item, looted = False):
-        self.item = item
+        self.item = item[0](*item[1], **item[2])
         self.looted = looted
         super().__init__(x, y)
 
@@ -109,19 +93,44 @@ class LootRoom(MapTile): # a room with one item in
         else:
             pass
 
-    def save(self):
-        if item is not None:
-            return {'type': 'LootRoom', 'pos': [self.x, self.y], 'item': self.item.save(), 'looted': self.looted}
-        else:
-            return {'type': 'LootRoom', 'pos': [self.x, self.y], 'item': None, 'looted': self.looted}
+    @property
+    def str(self):
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
+    item = {None if self.item is None else self.item.name}
+    looted = {repr(self.looted)}
+    x = {repr(self.x)}
+    y = {repr(self.y)}
+    start = {repr(self.start)}
+  Read-only:
+    available_actions() = {repr(self.available_actions())}
+    adjacent_moves() = {repr(self.adjacent_moves())}
+    intro_text() = {self.intro_text()}
+  Functions:
+    new_loot(item) # Changes the rooms loot to 'item', and sets 'looted' to False'''
 
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1], data['item'], data['looted'])
+    @property
+    def full_str(self):
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
+    ===
+    item =
+    {None if self.item is None else self.item.full_str}
+    ===
+    looted = {repr(self.looted)}
+    x = {repr(self.x)}
+    y = {repr(self.y)}
+    start = {repr(self.start)}
+  Read-only:
+    available_actions() = {repr(self.available_actions())}
+    adjacent_moves() = {repr(self.adjacent_moves())}
+    intro_text() = {self.intro_text()}
+  Functions:
+    new_loot(item) # Changes the rooms loot to 'item', and sets 'looted' to False'''
 
 class TresureRoom(MapTile): # like LootRoom, but with multiple items
     def __init__(self, x, y, items, looted = False):
-        self.items = items
+        self.items = [item[0](*item[1], **item[2]) for item in items]
         self.looted = looted
         super().__init__(x, y)
 
@@ -141,83 +150,58 @@ class TresureRoom(MapTile): # like LootRoom, but with multiple items
         else:
             pass
 
-    def save(self):
-        return {'type': 'TresureRoom', 'pos': [self.x, self.y], 'items': [i.save() for i in self.items], 'looted': self.looted}
+    @property
+    def str(self):
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
+    items = [
+{str([None if item is None else item.name for item in self.items])[1:-1]}
+    ]
+    looted = {repr(self.looted)}
+    x = {repr(self.x)}
+    y = {repr(self.y)}
+    start = {repr(self.start)}
+  Read-only:
+    available_actions() = {repr(self.available_actions())}
+    adjacent_moves() = {repr(self.adjacent_moves())}
+    intro_text() = {self.intro_text()}
+  Functions:
+    new_loot(item) # Changes the rooms loot to 'item', and sets 'looted' to False'''
 
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1], data['items'], data['looted'])
+    @property
+    def full_str(self):
+        def full_inv():
+            full_inv = ['None' if item is None else item.full_str for item in self.items]
+            full_inv_str = ''
+            for i in full_inv:
+                full_inv_str += i + ',\n'
+            return full_inv_str[:-2]
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
+
+    items = [ # start inv
+{full_inv()}
+    ] # end inv
+
+    looted = {repr(self.looted)}
+    x = {repr(self.x)}
+    y = {repr(self.y)}
+    start = {repr(self.start)}
+  Read-only:
+    available_actions() = {repr(self.available_actions())}
+    adjacent_moves() = {repr(self.adjacent_moves())}
+    intro_text() = {self.intro_text()}
+  Functions:
+    new_loot(items) # Changes the rooms loot to 'items', and sets 'looted' to False'''
 
 class SpawnPoint(TresureRoom): # starting room
-    def __init__(self, x, y, items=[items.SilverCoin(f.random(10,20)), items.Rock()]):
+    def __init__(self, x, y, items=[[items.SilverCoin, (f.random(10,20),), {}], [items.Rock, (), {}]]):
         super().__init__(x, y, items)
         self.start=True
 
-    def save(self):
-        return {'type': 'SpawnPoint', 'pos': [self.x, self.y]}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1])
-
 class EnemyRoom(MapTile): # a room with an enemy in it
     def __init__(self, x, y, enemy, defeat = False):
-        self.enemy = enemy
-        super().__init__(x, y)
-        self.defeat = defeat
-
-    def add_loot(self, player):
-        for item in self.enemy.inventory:
-            player.inventory.append(item)
-        self.enemy.inventory = []
-
-    def modify_player(self, the_player):
-        self.enemy.explode()
-        if self.enemy.is_alive():
-            if not self.enemy.ex:
-                blunt_dam = self.enemy.damage*self.enemy.blunt_rat
-                sharp_dam = self.enemy.damage*self.enemy.sharp_rat
-                blunt = blunt_dam - (the_player.blunt_res*blunt_dam)
-                sharp = sharp_dam - (the_player.sharp_res*sharp_dam)
-                the_player.hp -= (blunt+sharp)
-                print("Enemy does {} damage. You have {} HP remaining.".format(round(blunt+sharp,2), round(the_player.hp,2)))
-            else:
-                self.enemy.hp = 0
-                the_player.hp -= ( self.enemy.ex_damage - (the_player.ex_res*self.enemy.ex_damage) )
-                print("Enemy explodes and does {} damage! You have {} HP remaining.".format(round(self.enemy.ex_damage - (the_player.ex_res*self.enemy.ex_damage),2), round(the_player.hp,2)))
-        elif not self.defeat:
-            self.defeat = True
-            if len(self.enemy.inventory) > 0:
-                self.add_loot(the_player)
-            else:
-                pass
-
-class StartingRoom(SpawnPoint): # starting room
-    def __init__(self, x, y):
-        super().__init__(x, y, [items.SilverCoin(f.random(10,20)), items.Rock()])
-        self.start=True
-
-    def intro_text(self):
-        if game.i == 1:
-            return """
-        You find yourself in a cave with a flickering torch on the wall.
-        You can make out four paths, each equally as dark and foreboding.
-        """
-        else:
-            return """
-        Another unremarkable part of the cave. You must forge onwards.
-        """
-
-    def save(self):
-        return {'type': 'StartingRoom', 'pos': [self.x, self.y]}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1])
-
-class EnemyRoom(MapTile): # a room with an enemy in it
-    def __init__(self, x, y, enemy, defeat = False):
-        self.enemy = enemy
+        self.enemy = enemy[0](*enemy[1], **enemy[2])
         super().__init__(x, y)
         self.defeat = defeat
 
@@ -259,12 +243,58 @@ class EnemyRoom(MapTile): # a room with an enemy in it
             moves.append(actions.Save())
             return moves
 
-    def save(self):
-        return {'type': 'EnemyRoom', 'pos': [self.x, self.y], 'enemy': self.enemy.save(), 'defeated': self.defeat}
+    @property
+    def str(self):
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
 
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1], data['enemy'], data['defeated'])
+    #=====#
+    enemy = {self.enemy.str}
+    #=====#
+
+    x = {repr(self.x)}
+    y = {repr(self.y)}
+    start = {repr(self.start)}
+    defeat = {repr(self.defeat)}
+  Read-only:
+    available_actions() = {repr(self.available_actions())}
+    adjacent_moves() = {repr(self.adjacent_moves())}
+    intro_text() = {self.intro_text()}
+  Functions:
+    new_loot(item) # Changes the rooms loot to 'item', and sets 'looted' to False'''
+
+    @property
+    def full_str(self):
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
+
+    #=====#
+    enemy = {self.enemy.full_str}
+    #=====#
+
+    x = {repr(self.x)}
+    y = {repr(self.y)}
+    start = {repr(self.start)}
+    defeat = {repr(self.defeat)}
+  Read-only:
+    available_actions() = {repr(self.available_actions())}
+    adjacent_moves() = {repr(self.adjacent_moves())}
+    intro_text() = {self.intro_text()}'''
+
+class StartingRoom(SpawnPoint): # starting room
+    def __init__(self, x, y):
+        super().__init__(x, y, [[items.SilverCoin, (f.random(10,20),), {}], [items.Rock, (), {}]])
+
+    def intro_text(self):
+        if game.i == 1:
+            return """
+        You find yourself in a cave with a flickering torch on the wall.
+        You can make out four paths, each equally as dark and foreboding.
+        """
+        else:
+            return """
+        Another unremarkable part of the cave. You must forge onwards.
+        """
 
 class EmptyCavePath(MapTile): # empty room
     def intro_text(self):
@@ -275,13 +305,6 @@ class EmptyCavePath(MapTile): # empty room
     def modify_player(self, player):
         #Room has no action on player
         pass
-
-    def save(self):
-        return {'type': 'EmptyCavePath', 'pos': [self.x, self.y]}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1])
 
 class CaveMouth(MapTile): # empty room
     def intro_text(self):
@@ -296,13 +319,6 @@ class CaveMouth(MapTile): # empty room
         #Room has no action on player
         pass
 
-    def save(self):
-        return {'type': 'CaveMouth', 'pos': [self.x, self.y]}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1])
-
 class Forest(MapTile): # empty room
     def intro_text(self):
         return """
@@ -314,13 +330,6 @@ class Forest(MapTile): # empty room
         #Room has no action on player
         pass
 
-    def save(self):
-        return {'type': 'Forest', 'pos': [self.x, self.y]}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1])
-
 class Clearing(MapTile): # empty room
     def intro_text(self):
         return """
@@ -331,15 +340,8 @@ class Clearing(MapTile): # empty room
         #Room has no action on player
         pass
 
-    def save(self):
-        return {'type': 'Clearing', 'pos': [self.x, self.y]}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1])
-
 class ExplodingCowRoom(EnemyRoom): # I think the room's name explains it all
-    def __init__(self, x, y, enemy = enemies.CreeperCow(), defeat = False):
+    def __init__(self, x, y, enemy = [enemies.CreeperCow, (), {}], defeat = False):
         super().__init__(x, y, enemy, defeat)
 
     def intro_text(self):
@@ -352,15 +354,8 @@ class ExplodingCowRoom(EnemyRoom): # I think the room's name explains it all
             The corpse of a dead (and very hot) cow rots on the ground.
             """
 
-    def save(self):
-        return {'type': 'ExplodingCowRoom', 'pos': [self.x, self.y], 'enemy': self.enemy.save(), 'defeated': self.defeat}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1], data['enemy'], data['defeated'])
-
 class BruteRoom(EnemyRoom): # a room with a Brute enemy in
-    def __init__(self, x, y, enemy = enemies.Brute(), defeat = False):
+    def __init__(self, x, y, enemy = [enemies.Brute, (), {}], defeat = False):
         super().__init__(x, y, enemy, defeat)
 
     def intro_text(self):
@@ -373,13 +368,6 @@ class BruteRoom(EnemyRoom): # a room with a Brute enemy in
             The corpse of the big man lies on the ground.
             """
 
-    def save(self):
-        return {'type': 'BruteRoom', 'pos': [self.x, self.y], 'enemy': self.enemy.save(), 'defeated': self.defeat}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1], data['enemy'], data['defeated'])
-
 class StashRoom(TresureRoom):
     def w():
         w = f.randomWeight([0,5,2.5,1.5,1])
@@ -387,7 +375,7 @@ class StashRoom(TresureRoom):
         maxw = 0.025/4
         return f.randomF(minw, maxw) * w
 
-    def __init__(self, x, y, items=[items.Dagger(), items.Diamond(round(w(), 3), False), items.SilverCoin(f.random(25,75)), items.GoldCoin(f.randomF(0.5, 2.0))], looted = False):
+    def __init__(self, x, y, items=[[items.Dagger, (), {}], [items.Diamond, (round(w(), 3), False), {}], [items.SilverCoin, (f.random(25,75),), {}], [items.GoldCoin, (f.randomF(0.5, 2.0),), {}]], looted = False):
         super().__init__(x, y, items, looted)
 
     def intro_text(self):
@@ -402,15 +390,8 @@ class StashRoom(TresureRoom):
             Either you've already been here or...
             """
 
-    def save(self):
-        return {'type': 'StashRoom', 'pos': [self.x, self.y], 'items': [i.save() for i in self.items], 'looted': self.looted}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1], data['items'], data['looted'])
-
 class CoinsRoom(LootRoom):
-    def __init__(self, x, y, item=items.CopperCoin(f.random(10,200)), looted = False):
+    def __init__(self, x, y, item=[items.CopperCoin, (f.random(10,200),), {}], looted = False):
         super().__init__(x, y, item, looted)
 
     def intro_text(self):
@@ -424,16 +405,6 @@ class CoinsRoom(LootRoom):
             Another unremarkable part of the cave. You must forge onwards.
             """
 
-    def save(self):
-        if self.item is not None:
-            return {'type': 'CoinsRoom', 'pos': [self.x, self.y], 'item': self.item.save(), 'looted': self.looted}
-        else:
-            return {'type': 'CoinsRoom', 'pos': [self.x, self.y], 'item': None, 'looted': self.looted}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1], data['item'], data['looted'])
-
 class LeaveCaveRoom(MapTile):
     def intro_text(self):
         return """
@@ -446,10 +417,3 @@ class LeaveCaveRoom(MapTile):
 
     def modify_player(self, player):
         player.victory = True
-
-    def save(self):
-        return {'type': 'LeaveCaveRoom', 'pos': [self.x, self.y], 'start': self.start}
-
-    @classmethod
-    def load(cls, data):
-        return cls(data['pos'][0], data['pos'][1], data['start'])

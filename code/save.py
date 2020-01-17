@@ -2,6 +2,7 @@ import functions as f
 import json, os
 from inspect import currentframe, getframeinfo
 from pathlib import Path
+import pickle
 
 def make_valid_file(name):
     invalid_symbols = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
@@ -11,16 +12,18 @@ def make_valid_file(name):
 
 def save(data, save, file): # save data to a save
     path = str(Path(getframeinfo(currentframe()).filename).resolve().parent) + str(Path(f'/saves/{make_valid_file(save)}/'))
-    file = path + f'\\{file}.json'
+    file = path + f'\\{file}.pickle'
     if not os.path.exists(path):
         os.makedirs(path)
-    with open(file, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, separators=(',', ':'))
+    with open(file, 'wb') as f:
+        pickle.dump(data, f)
+    #with open(file, 'w', encoding='utf-8') as f:
+    #    json.dump(data, f, indent=2, separators=(',', ':'))
 
 def load(save, file): # load data from a save
-    file = str(Path(getframeinfo(currentframe()).filename).resolve().parent) + str(Path(f'/saves/{save}/{file}.json'))
-    with open(file, 'r', encoding='utf-8') as f:
-        return json.load(f)
+    file = str(Path(getframeinfo(currentframe()).filename).resolve().parent) + str(Path(f'/saves/{save}/{file}.pickle'))
+    with open(file, 'rb') as f:
+        return pickle.load(f)
 
 def list_saves(): # list all folders in the './saves' directory
     path = str(Path(getframeinfo(currentframe()).filename).resolve().parent) + str(Path(f'/saves/'))

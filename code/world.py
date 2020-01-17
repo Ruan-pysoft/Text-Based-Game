@@ -3,21 +3,17 @@ import items, tiles, json
 _world = {}
 starting_position = [0, 0]
 
-def save():
-    world = {}
-    for k, v in _world.items():
-        if v != None: world[k] = v.save()
-        else: world[k] = None
-    return world
+##def save():
+##    world = {}
+##    for k, v in _world.items():
+##        if v != None: world[k] = v.save()
+##        else: world[k] = None
+##    return world
 
-def load(data):
+def load(world):
     #print(data)
-    for k, v in data.items():
-        _world[k] = tiles.MapTile.load(v)
-        if v != None:
-            if _world[k].start:
-                global starting_position
-                starting_position = k
+    global _world
+    _world = world
 
 def load_tiles(world):
     """Parses a file that describes the world space into the _world object"""
@@ -36,3 +32,17 @@ def load_tiles(world):
 
 def tile_exists(x, y):
     return _world.get(json.dumps([x, y]))
+
+def string():
+    s = ''
+    for pos in _world:
+        s += '\n'f'{repr(pos)}:''\n'
+        s += '  None' if _world[pos] is None else f'  {_world[pos].str}'
+    return s
+
+def full_string():
+    s = ''
+    for pos in _world:
+        s += '\n'f'{repr(pos)}:''\n'
+        s += '  None' if _world[pos] is None else f'  {_world[pos].full_str}'
+    return s

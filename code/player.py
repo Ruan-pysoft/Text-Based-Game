@@ -8,9 +8,7 @@ class Player: # player object
         self.intelligence = 10 # currently not used
         self.strength = 10 # used to determine how much damage the player should deal
         self.toughness = 10 # used to determine how much health the player should have
-        self.base_damage = 0.1*self.strength # damage player deals
         self.inventory = [] # inventory
-        self.maxHP = 5*self.toughness # max amount of health player can have
         self.hp = 5*self.toughness # current amount of health player has
         self.location_x, self.location_y = world.starting_position # player's position
         self.victory = False
@@ -20,28 +18,65 @@ class Player: # player object
         self.ex_res = f.randomF(-0.5,-0.25,2)  # how much explotion damage the player can absorb
         # negative means that source of damage does MORE damage
 
-    def save(self):
-        return {'intelligence': self.intelligence, 'strength': self.strength,
-                'toughness': self.toughness, 'base_damage': self.base_damage,
-                'inventory': [x.save() for x in self.inventory], 'maxHP': self.maxHP,
-                'hp': self.hp, 'location': [self.location_x, self.location_y],
-                'victory': self.victory, 'blunt_res': self.blunt_res,
-                'sharp_res': self.sharp_res, 'ex_res': self.ex_res}
+    @property
+    def maxHP(self):
+        return 5*self.toughness # max amount of health player can have
 
-    def load(self, data):
-        self.intelligence = data['intelligence'] # set intelligence
-        self.strength = data['strength'] # set strength
-        self.toughness = data['toughness'] # set toughness
-        self.base_damage = data['base_damage'] # set damage player deals
-        self.inventory = [mc.Item.load(x) for x in data['inventory']] # load inventory
-        self.maxHP = data['maxHP'] # set max health player can have
-        self.hp = data['hp'] # set health player has
-        self.location_x = data['location'][0] # set x location
-        self.location_y = data['location'][1] # set y location
-        self.victory = data['victory'] # has the player beaten the game?
-        self.blunt_res = data['blunt_res'] # set blunt resistance
-        self.sharp_res = data['sharp_res'] # set sharpness resistance
-        self.ex_res = data['ex_res'] # set explotion resistance
+    @property
+    def base_damage(self):
+        return 0.1*self.strength # damage player deals
+
+    @property
+    def str(self):
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
+    intelligence = {repr(self.intelligence)}
+    strength = {repr(self.strength)}
+    toughness = {repr(self.toughness)}
+
+    inventory = [
+{str([i.name for i in self.inventory])[1:-1]}
+    ]
+
+    hp = {repr(self.hp)}
+    location_x, location_y = {repr(self.location_x)}, {repr(self.location_y)}
+    victory = {repr(self.victory)}
+    blunt_res = {repr(self.blunt_res)}
+    sharp_res = {repr(self.sharp_res)}
+    ex_res = {repr(self.ex_res)}
+  Read-only:
+    is_alive() = {repr(self.is_alive())}
+    maxHP = {repr(self.maxHP)}
+    base_damage = {repr(self.base_damage)}'''
+
+    @property
+    def full_str(self):
+        def full_inv():
+            full_inv = [i.full_str for i in self.inventory]
+            full_inv_str = ''
+            for i in full_inv:
+                full_inv_str += i + ',\n'
+            return full_inv_str[:-2]
+        return f'''{repr(self)[1:-1]} in RAM:
+  Variables:
+    intelligence = {repr(self.intelligence)}
+    strength = {repr(self.strength)}
+    toughness = {repr(self.toughness)}
+
+    inventory = [ # start inv
+{full_inv()}
+    ] # end inv
+
+    hp = {repr(self.hp)}
+    location_x, location_y = {repr(self.location_x)}, {repr(self.location_y)}
+    victory = {repr(self.victory)}
+    blunt_res = {repr(self.blunt_res)}
+    sharp_res = {repr(self.sharp_res)}
+    ex_res = {repr(self.ex_res)}
+  Read-only:
+    is_alive() = {repr(self.is_alive())}
+    maxHP = {repr(self.maxHP)}
+    base_damage = {repr(self.base_damage)}'''
 
     def is_alive(self):
         return self.hp > 0
@@ -91,7 +126,6 @@ class Player: # player object
         self.move(dx=-1, dy=0)
 
     def attack(self, enemy): # attack something
-        #TODO: let player choose weapon
         weapon = None
         weapons = []
         max_dmg = 0
